@@ -44,7 +44,7 @@ class DjangoStorageAdapterTestCase(DjangoAdapterTestCase):
         self.assertEqual(response_1.response, response)
 
     def test_get_latest_response_from_two_responses(self):
-        response_1 = ResponseFactory(
+        ResponseFactory(
             statement=StatementFactory(text='A'),
             response=StatementFactory(text='B'),
             conversation='test'
@@ -60,12 +60,12 @@ class DjangoStorageAdapterTestCase(DjangoAdapterTestCase):
         self.assertEqual(response_2.response, response)
 
     def test_get_latest_response_from_three_responses(self):
-        response_1 = ResponseFactory(
+        ResponseFactory(
             statement=StatementFactory(text='A'),
             response=StatementFactory(text='B'),
             conversation='test'
         )
-        response_2 = ResponseFactory(
+        ResponseFactory(
             statement=StatementFactory(text='C'),
             response=StatementFactory(text='D'),
             conversation='test'

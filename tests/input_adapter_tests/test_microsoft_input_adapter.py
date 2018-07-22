@@ -1,5 +1,5 @@
 from unittest import TestCase
-from mock import Mock
+from unittest.mock import Mock
 from chatterbot.conversation import Statement
 from chatterbot.input import Microsoft
 from chatterbot.input import microsoft
@@ -124,5 +124,5 @@ class MicrosoftAdapterTests(TestCase):
 
     def test_process_input(self):
         statement = Statement('Hi! What is your name?')
-        data = self.adapter.process_input(statement)
+        data = self.adapter.process_input(statement, conversation='test')
         self.assertEqual('Hi! What is your name?', data)

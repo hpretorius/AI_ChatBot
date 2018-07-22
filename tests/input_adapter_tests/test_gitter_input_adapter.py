@@ -1,5 +1,5 @@
 from unittest import TestCase
-from mock import Mock
+from unittest.mock import Mock
 from chatterbot.conversation import Statement
 from chatterbot.input import gitter
 from chatterbot.input import Gitter
@@ -120,5 +120,5 @@ class GitterAdapterTests(TestCase):
 
     def test_process_input(self):
         statement = Statement('Hello')
-        data = self.adapter.process_input(statement)
+        data = self.adapter.process_input(statement, 'test')
         self.assertEqual('Hello', data)

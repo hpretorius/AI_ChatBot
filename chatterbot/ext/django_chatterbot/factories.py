@@ -28,12 +28,6 @@ class ResponseFactory(DjangoModelFactory):
         model = models.Response
 
 
-class ConversationFactory(DjangoModelFactory):
-
-    class Meta:
-        model = models.Conversation
-
-
 class TagFactory(DjangoModelFactory):
 
     name = factory.Faker('word')

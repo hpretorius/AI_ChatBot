@@ -99,7 +99,7 @@ class ChatBot(object):
         :returns: A response to the input.
         :rtype: Statement
         """
-        input_statement = self.input.process_input_statement(
+        input_statement = self.input.process_input(
             input_item,
             conversation
         )
@@ -108,42 +108,43 @@ class ChatBot(object):
         for preprocessor in self.preprocessors:
             input_statement = preprocessor(self, input_statement)
 
-        statement, response = self.generate_response(input_statement, conversation)
+        response = self.generate_response(input_statement)
 
         # Learn that the user's input was a valid response to the chat bot's previous output
-        previous_statement = self.storage.get_latest_response(conversation)
+        previous_statement = self.storage.get_latest_response(input_statement.conversation)
 
         if not self.read_only:
-            self.learn_response(conversation, statement, previous_statement)
+            self.learn_response(input_statement, previous_statement)
 
         # Process the response output with the output adapter
         return self.output.process_response(response, conversation)
 
-    def generate_response(self, input_statement, conversation):
+    def generate_response(self, input_statement):
         """
         Return a response based on a given input statement.
         """
-        self.storage.generate_base_query(self, conversation)
+        self.storage.generate_base_query(self, input_statement.conversation)
 
         # Select a response to the input statement
         response = self.logic.process(input_statement)
 
-        return input_statement, response
+        return response
 
-    def learn_response(self, conversation, statement, previous_statement):
+    def learn_response(self, statement, previous_statement):
         """
         Learn that the statement provided is a valid response.
         """
-        from .conversation import Response
+        previous_statement_text = previous_statement
 
-        if previous_statement:
-            statement.add_response(
-                Response(previous_statement.text, conversation=conversation)
-            )
-            self.logger.info('Adding "{}" as a response to "{}"'.format(
-                statement.text,
-                previous_statement.text
-            ))
+        if previous_statement is not None:
+            previous_statement_text = previous_statement.text
+
+        statement.in_response_to = previous_statement_text
+
+        self.logger.info('Adding "{}" as a response to "{}"'.format(
+            statement.text,
+            previous_statement_text
+        ))
 
         # Save the statement after selecting a response
         self.storage.update(statement)

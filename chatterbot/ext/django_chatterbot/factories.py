@@ -18,16 +18,6 @@ class StatementFactory(DjangoModelFactory):
         model = models.Statement
 
 
-class ResponseFactory(DjangoModelFactory):
-
-    statement = factory.SubFactory(StatementFactory)
-
-    response = factory.SubFactory(StatementFactory)
-
-    class Meta:
-        model = models.Response
-
-
 class TagFactory(DjangoModelFactory):
 
     name = factory.Faker('word')

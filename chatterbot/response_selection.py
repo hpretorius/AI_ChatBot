@@ -23,7 +23,9 @@ def get_most_frequent_response(input_statement, response_list):
     logger.info(u'Selecting response with greatest number of occurrences.')
 
     for statement in response_list:
-        count = statement.get_response_count(input_statement)
+        count = len(statement.storage.filter(
+            in_response_to=statement.text
+        ))
 
         # Keep the more common statement
         if count >= occurrence_count:

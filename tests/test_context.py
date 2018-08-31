@@ -15,13 +15,18 @@ class AdapterTests(ChatBotTestCase):
         self.assertEqual('TESTING', value)
 
     def test_get_latest_response(self):
-        from chatterbot.conversation import Statement, Response
+        from chatterbot.conversation import Statement
         conversation = 'test'
 
-        self.chatbot.storage.update(Statement(text='A'))
-        self.chatbot.storage.update(Statement(text='B', in_response_to=[
-            Response(text='A', conversation=conversation)
-        ]))
+        self.chatbot.storage.update(Statement(
+            text='A',
+            conversation=conversation
+        ))
+        self.chatbot.storage.update(Statement(
+            text='B',
+            conversation=conversation,
+            in_response_to='A'
+        ))
 
         response_statement = self.chatbot.storage.get_latest_response(
             conversation
